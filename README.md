@@ -1,5 +1,16 @@
 # PLCProject
 Makin a language
+Add ideas here
+####################################################
+Making it similar to python
+
+
+
+
+
+
+
+#####################################################
 Testing testing 123
 
 
