@@ -1,0 +1,25 @@
+statements --> statement+
+
+statement --> small_stmt | compound_stmt
+
+small_stmt --> assign_stmt | return_stmt | import_stmt | global_stmt
+
+compound_stmt --> func_def | if_stmt | while_stmt | for_stmt | class_def | try_stmt
+
+assign_stmt --> type NAME assignment basic_expression
+
+basic_expression --> TERM '+' basic_expression | TERM '-' basic_expression | TERM '*' basic_expression | TERM '/' basic_expression | TERM '**' basic_expression | TERM '*' basic_expression | TERM 
+
+assignment --> = | += | -= | *= | **=
+
+type --> int | String | float | char | bool
+
+import_stmt --> 'import' NAME
+
+if_stmt --> 'if' expression ':' block ifel_stmt | 'if' expression ':' block [else_block]
+ifel_stmt --> 'ifel' expression ':' block ifel_stmt | 'ifel' expression ':' block [else_block]
+else_block --> 'else' ':' block
+
+while_stmt --> 'while' expression ':' block [else_block]
+
+block --> NEWLINE INDENT statements | small_stmt
