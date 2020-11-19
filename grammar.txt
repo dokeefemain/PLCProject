@@ -2,7 +2,7 @@ statements --> statement+
 
 statement --> small_stmt | compound_stmt
 
-small_stmt --> assign_stmt | return_stmt | import_stmt | global_stmt
+small_stmt --> assign_stmt | return_stmt | import_stmt | global_stmt | nonlocal_stmt
 
 compound_stmt --> func_def | if_stmt | while_stmt | for_stmt | class_def | try_stmt
 
@@ -16,10 +16,34 @@ type --> int | String | float | char | bool
 
 import_stmt --> 'import' NAME
 
+return_stmt --> 'return' return_list
+
+return_list --> RETURNVAR (',' RETURNVAR )+ [','] | RETURNVAR ',' | RETURNVAR
+
+global_stmt --> 'global' NAME+
+
+func_def --> 'def' NAME '(' [NAME] ')' ':'
+
+nonlocal_stmt --> 'nonlocal' NAME+
 if_stmt --> 'if' expression ':' block ifel_stmt | 'if' expression ':' block [else_block]
 ifel_stmt --> 'ifel' expression ':' block ifel_stmt | 'ifel' expression ':' block [else_block]
 else_block --> 'else' ':' block
 
 while_stmt --> 'while' expression ':' block [else_block]
 
+for_stmt --> 'for' NAME 'in' NAME ':'
+
+class_def --> 'class' '(' [NAME] ')' ':'
+
+try_stmt --> 'try' ':' block | 'try' ':' block 'except' ':' block
+
+
 block --> NEWLINE INDENT statements | small_stmt
+
+expression --> NAME bool NAME [ logic expression ] | NAME bool truth [ logic expression ]
+
+bool --> '>' | '>=' | '<' | '<=' | '==' | '!='
+
+truth --> 'Tru' | 'False'
+
+logic --> 'and' | 'or' | 'not'
