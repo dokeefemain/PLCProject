@@ -46,4 +46,4 @@ bool --> '>' | '>=' | '<' | '<=' | '==' | '!='
 
 truth --> 'Tru' | 'False'
 
-logic --> 'and' | 'or' | 'not'
+logic --> 'and' | 'or' | 'nah'
