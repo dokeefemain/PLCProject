@@ -15,6 +15,6 @@ double}
 Operators - { +, -, /, %}
 Literals which include:
 String - {""}
-Integer - {int}
-Real - {float}
+Integer - {int} ex int a, a = 10
+Real - {float} float result, result = 2.1458f
 Boolean - {bool} // if true : return tru if false : return nah
