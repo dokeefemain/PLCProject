@@ -1,0 +1,20 @@
+Identifiers:
+$ - used to start an identifer
+_ - used to seperate string when intializing an identifer
+Invalid types of Identifiers include:
+sum of vals // since we can not intialize a identifer with spaces in the name
+2013stats // since an identifier can not start with a digit
+b - a // an operator should not be in the identifier
+var-1 // we can not have a hyphen in the identifier
+log2&log3 // we can not have a and sign as an identifer
+
+_____________________________________________________________________________________________________________
+
+Key Words - { if, ifel, else, while, for, try, except, class, bool, tru, false, return, def, global, and, or , nah, bool, switch, case, catch, int, String, float (real number), char, bool,
+double} 
+Operators - { +, -, /, %}
+Literals which include:
+String - {""}
+Integer - {int}
+Real - {float}
+Boolean - {bool} // if true : return tru if false : return nah
