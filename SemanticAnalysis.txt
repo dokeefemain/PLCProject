@@ -14,5 +14,16 @@ Information is stored:
 
 symbols are stored in the symbol table by using its insert method.
 
+If variables are not declared and stored in a variable table:
+Return null or error. 
+
+For example:
+Case 1                 Case 2
+new int a, b;          | new int b;
+a = 10 , b = 7;        | a = 10 , b = 7;
+return a;              | return a;
+# Results in no Error  |# Results in an Error since a was not declared
+
+
 
 
