@@ -2,7 +2,7 @@ statements --> statement+
 
 statement --> small_stmt | compound_stmt
 
-small_stmt --> assign_stmt | return_stmt | import_stmt | global_stmt | nonlocal_stmt
+small_stmt --> assign_stmt | return_stmt | import_stmt | global_stmt | nonlocal_stmt | print_stmt
 
 compound_stmt --> func_def | if_stmt | while_stmt | for_stmt | class_def | try_stmt
 
@@ -47,3 +47,5 @@ bool --> '>' | '>=' | '<' | '<=' | '==' | '!='
 truth --> 'Tru' | 'False'
 
 logic --> 'and' | 'or' | 'nah'
+
+print_stmt -->  'print' ([expression (',' expression)* [',']] | '>>' expression [(',' expression)+ [',']])
