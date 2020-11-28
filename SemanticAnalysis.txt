@@ -1,0 +1,29 @@
+Requirements:
+- The variables must be declared before they are used
+- The variables must have matching types when used in arithmetic expressions (this is a big part of semantic analysis called type checking that we’ll cover separately)
+- There should be no duplicate declarations (Pascal prohibits, for example, having a local variable in a procedure with the same name as one of the procedure’s formal parameters)
+- A name reference in a call to a procedure must refer to the actual declared procedure
+- A procedure call must have the correct number of arguments and the arguments’ types must match those of formal parameters in the procedure declaration
+- Utilize the symbol table and check if the symbol exists in it
+
+Info we need to collect about varibles:
+
+Name, category, and type. And we utilize the symbols to hold that information.
+
+Information is stored:
+
+symbols are stored in the symbol table by using its insert method.
+
+If variables are not declared and stored in a variable table:
+Return null or error. 
+
+For example:
+Case 1                 Case 2
+new int a, b;          | new int b;
+a = 10 , b = 7;        | a = 10 , b = 7;
+return a;              | return a;
+# Results in no Error  |# Results in an Error since a was not declared
+
+
+
+
