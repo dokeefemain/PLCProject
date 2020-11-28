@@ -8,7 +8,7 @@ compound_stmt --> func_def | if_stmt | while_stmt | for_stmt | class_def | try_s
 
 assign_stmt --> type NAME assignment basic_expression
 
-basic_expression --> TERM '+' basic_expression | TERM '-' basic_expression | TERM '*' basic_expression | TERM '/' basic_expression | TERM '**' basic_expression | TERM '*' basic_expression | TERM 
+basic_expression --> TERM '+' basic_expression | TERM '-' basic_expression | TERM '*' basic_expression | TERM '/' basic_expression | TERM '**' basic_expression | TERM 
 
 assignment --> = | += | -= | *= | **=
 
