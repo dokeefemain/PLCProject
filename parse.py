@@ -44,19 +44,26 @@ def compound_stmt():
     if_stmt()
     while_stmt()
     for_stmt()
-    class_def
-    try_stmt
+    class_def()
+    try_stmt()
 
     # assign_stmt --> type NAME assignment basic_expression
 
 # TODO
 def assign_stmt():
-    pass
+    type()
+    lex()
+    assignment()
+    basic_expression()
 
   # basic_expression --> TERM '+' basic_expression | TERM '-' basic_expression | TERM '*' basic_expression | TERM '/' basic_expression | TERM '**' basic_expression | TERM '*' basic_expression | TERM 
 
 # This may need to be changed to basic_expression() and combine with multi_div() to corroborate  
 # grammar above
+
+def basic_expression():
+    plus_minus()
+
 def plus_minus():
       lex()
       plus_minus()
@@ -130,13 +137,11 @@ def parens():
 def while_stmt():
     if(lex.tokenize(str) is 'WHILE'):
         lex()
-    else:
-        error()
+    
         if(lex.tokenize(str) is '('):
             lex()
             bool()
-        else:
-            error()
+        
             if(lex.tokenize(str) is ')'):
                 lex()
                 statement()
@@ -144,6 +149,27 @@ def while_stmt():
                 error()
 # if_stmt --> 'if' expression ':' block ifel_stmt | 'if' expression ':' block [else_block]
 #TODO
+# def if_stmt():
+#     if(lex.tokenize(str) is not 'IF'): # change 
+#         error()
+#     else:
+#         lex()
+#         if(lex.tokenize(str) is not '('):
+#             error()
+#         else:
+#             lex()
+#             bool()
+#             if (lex.tokenize(str) is not ')'):
+#                 error()
+#             else:
+#                 lex()
+#                 statement()
+#                 if(lex.tokenize(str) is 'ELSE'):
+#                     lex()
+#                     statement()
+#                 else:
+#                     error()
+
 def if_stmt():
     if(lex.tokenize(str) is not 'IF'): # change 
         error()
@@ -159,17 +185,44 @@ def if_stmt():
             else:
                 lex()
                 statement()
-                if(lex.tokenize(str) is 'ELSE'):
+                if(lex.tokenize(str) is 'IFEL'):
+                    ifel_stmt()
+                
+                else:
                     lex()
                     statement()
-                else:
-                    error()
+                    if(lex.tokenize(str) is 'ELSE'):
+                        lex()
+                        statement()
+                    else:
+                        error()
 
 
 # ifel_stmt --> 'ifel' expression ':' block ifel_stmt | 'ifel' expression ':' block [else_block]
 #TODO
+# def ifel_stmt():
+#     if(lex.tokenize(str) is not 'IFEL'): # change 
+#         error()
+#     else:
+#         lex()
+#         if(lex.tokenize(str) is not '('):
+#             error()
+#         else:
+#             lex()
+#             bool()
+#             if (lex.tokenize(str) is not ')'):
+#                 error()
+#             else:
+#                 lex()
+#                 statement()
+#                 if(lex.tokenize(str) is 'ELSE'):
+#                     lex()
+#                     statement()
+#                 else:
+#                     error()
+
 def ifel_stmt():
-    if(lex.tokenize(str) is not 'IFEL'): # change 
+    if(lex.tokenize(str) is not 'IF'):
         error()
     else:
         lex()
@@ -183,11 +236,18 @@ def ifel_stmt():
             else:
                 lex()
                 statement()
-                if(lex.tokenize(str) is 'ELSE'):
+                if(lex.tokenize(str) is 'IFEL'):
                     lex()
                     statement()
+                
                 else:
-                    error()
+                    lex()
+                    statement()
+                    if(lex.tokenize(str) is not 'ELSE'):
+                        error()
+                    else:
+                        lex()
+                        statement()
 
 
 # else_block --> 'else' ':' block
@@ -209,19 +269,19 @@ def start():
 
 
 
-def plus_minus():
-    plus_minus()
-    while(lex.tokenize(str) is '+' or lex.tokenize(str) is '-'):
-        lex()
-        multi_div()
-        multi_div()
+# def plus_minus():
+#     plus_minus()
+#     while(lex.tokenize(str) is '+' or lex.tokenize(str) is '-'):
+#         lex()
+#         multi_div()
+#         multi_div()
 
-def multi_div():
-    multi_div()
-    while(lex.tokenize(str) is '*' or lex.tokenize(str) is '/'):
-        lex()
-        parens()
-        parens()
+# def multi_div():
+#     multi_div()
+#     while(lex.tokenize(str) is '*' or lex.tokenize(str) is '/'):
+#         lex()
+#         parens()
+#         parens()
 
 def parens():
     if(lex.tokenize(str) is '('):
@@ -243,12 +303,17 @@ def variable():
 def import_stmt():
     while(lex.tokenize(str) is 'import'):
         lex()
+        return 'NAME'
 
 # return_stmt --> 'return' return_list
 
 def return_stmt():
     while(lex.tokenize(str) is 'return'):
         lex()
+        return_list()
+    while not(lex.tokenize(str) is 'return'):
+        error()
+
 
 # bool --> '>' | '>=' | '<' | '<=' | '==' | '!='
 def bool():
@@ -287,19 +352,51 @@ def nonlocal_stmt():
 
 # func_def --> 'def' NAME '(' [NAME] ')' ':'
 def func_def():
-    if(lex.tokenize(str) is 'def'): 
+    if(lex.tokenize(str) is 'DEF'):
         lex()
+    
+        if(lex.tokenize(str) is '('):
+            lex()
+            bool()
+
+            if(lex.tokenize(str) is 'NAME'):
+                lex()
+        
+                if(lex.tokenize(str) is ')'):
+                    lex()
+                    statement()
+                else:
+                    error()
 
 # for_stmt --> 'for' NAME 'in' NAME ':'
 
 def for_stmt():
     if(lex.tokenize(str) is 'for'): 
         lex()
+        if(lex.tokenize(str) is 'NAME'):
+            lex()
+            if(lex.tokenize(str) is 'in'):
+                lex()
+                if(lex.tokenize(str) is 'NAME'):
+                    lex()
 
 # class_def --> 'class' '(' [NAME] ')' ':'
 def class_def():
-    if(lex.tokenize(str) is 'class'): 
+    if(lex.tokenize(str) is 'CLASS'): 
         lex()
+    
+        if(lex.tokenize(str) is '('):
+            lex()
+            bool()
+
+            if(lex.tokenize(str) is 'NAME'):
+                lex()
+        
+                if(lex.tokenize(str) is ')'):
+                    lex()
+                    statement()
+                else:
+                    error()
 
 
 # try_stmt --> 'try' ':' block | 'try' ':' block 'except' ':' block
