@@ -8,6 +8,11 @@ import re
 #  = lex.tokenize(str)
 
     
+def main():
+    test = open('test.txt','r').read()
+    Token_arry = lex().tokenize(test)
+    print(Token_arry)
+    statement(Token_arry)
 
 
 def error():
@@ -20,16 +25,20 @@ def error():
   # statement --> small_stmt | compound_stmt
 
 
-def statement():
-    lex()
-    small_stmt()
-    compound_stmt()
+def statement(Token_arry):
+    #lex()
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    print(lexT)
+    small_stmt(Token_arry)
+    compound_stmt(toke)
 
 
  # small_stmt --> assign_stmt | return_stmt | import_stmt | global_stmt | nonlocal_stmt | print_stmt
 
-def small_stmt():
-    lex()
+def small_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
     assign_stmt()
     return_stmt()
     import_stmt()
@@ -170,30 +179,37 @@ def while_stmt():
 #                 else:
 #                     error()
 
-def if_stmt():
-    if(lex.tokenize(str) is not 'IF'): # change 
+def if_stmt(Token_arry):
+    LexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(LexT is not 'IF'): # change 
         error()
     else:
-        lex()
-        if(lex.tokenize(str) is not '('):
+        LexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        if(LexT is not '('):
             error()
         else:
-            lex()
-            bool()
-            if (lex.tokenize(str) is not ')'):
+            LexT = Token_arry[0]
+            Token_arry = Token_arry[1:-1]
+            #bool(Token_arry)
+            if (LexT is not ')'):
                 error()
             else:
-                lex()
-                statement()
-                if(lex.tokenize(str) is 'IFEL'):
-                    ifel_stmt()
+                LexT = Token_arry[0]
+                Token_arry = Token_arry[1:-1]
+                #statement(Token_arry)
+                if(LexT is 'IFEL'):
+                    #ifel_stmt(Token_arry)
                 
                 else:
-                    lex()
-                    statement()
-                    if(lex.tokenize(str) is 'ELSE'):
-                        lex()
-                        statement()
+                    LexT = Token_arry[0]
+                    Token_arry = Token_arry[1:-1]
+                    #statement(Token_arry)
+                    if(LexT is 'ELSE'):
+                        LexT = Token_arry[0]
+                        Token_arry = Token_arry[1:-1]
+                        #statement(Token_arry)
                     else:
                         error()
 
@@ -448,4 +464,4 @@ def print_stmt():
         lex()
 
 
-
+main()

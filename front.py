@@ -4,7 +4,6 @@ import re
 class lex:
     # Token row
     lin_num = 1
-
     def tokenize(self, code):
         rules = [
             ('AND',r'and'),
@@ -81,8 +80,8 @@ class lex:
                     row.append(self.lin_num)
                     # To print information about a Token
                     print('Token = {0}, Lexeme = \'{1}\', Row = {2}, Column = {3}'.format(token_type, token_lexeme, self.lin_num, col))
-
-        return token, lexeme, row, column
+        print(token)
+        return token
 print('test')
 test = lex()
 str = open('test.txt','r').read()
