@@ -42,6 +42,7 @@ class lex:
             ('MINUS_EQUAL',r'-='),
             ('TIMES_EQUAL',r'\*='),
             ('PLUS',r'\+'),
+            ('MINUS',r'\+'),
             ('TIMES',r'\*'),
             ('DIV',r'\/'),
             ('ID',r'[a-zA-Z]\w*'),
