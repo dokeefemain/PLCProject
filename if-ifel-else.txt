@@ -1,0 +1,57 @@
+def if_stmt():
+    if(lex.tokenize(str) is not 'IF'): # change 
+        error()
+    else:
+        lex()
+        if(lex.tokenize(str) is not '('):
+            error()
+        else:
+            lex()
+            bool()
+            if (lex.tokenize(str) is not ')'):
+                error()
+            else:
+                lex()
+                statement()
+		if(lex.tokenize(str) is 'IFEL'):
+		    ifel_stmt()
+		else:
+		    error()
+		else:
+                	lex()
+                	statement()
+                	if(lex.tokenize(str) is 'ELSE'):
+                    	   lex()
+                    	   statement()
+                	else:
+                    	   error()
+
+______________________________________________________________________________________________________
+def ifel_stmt():
+    if(lex.tokenize(str) is not 'IF'):
+        error()
+    else:
+        lex()
+        if(lex.tokenize(str) is not '('):
+            error()
+        else:
+            lex()
+            bool()
+            if (lex.tokenize(str) is not ')'):
+                error()
+            else:
+                lex()
+                statement()
+                if(lex.tokenize(str) is 'IFEL'):
+                    lex()
+                    statement()
+                else:
+                    error()
+		else:
+		    lex()
+                    statement()
+                    if(lex.tokenize(str) is not 'ELSE'):
+			error()
+		    else:
+			lex()
+                    	statement()
