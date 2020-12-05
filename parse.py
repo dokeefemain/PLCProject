@@ -102,7 +102,16 @@ def assignment():
   # type --> int | String | float | char | bool
 
 def type():
-    pass
+    while(lex.tokenize(str) is 'INT'):
+      lex()
+      while(lex.tokenize(str) is 'STRING'):
+        lex()
+        while(lex.tokenize(str) is 'FLOAT'):
+          lex()
+          while(lex.tokenize(str) is 'CHAR'):
+            lex()
+            while(lex.tokenize(str) is 'BOOL'):
+              lex()
 
 def parens():
       if(lex.tokenize(str) is 'INT'):
@@ -160,7 +169,35 @@ def if_stmt():
 # ifel_stmt --> 'ifel' expression ':' block ifel_stmt | 'ifel' expression ':' block [else_block]
 #TODO
 def ifel_stmt():
-    pass
+    if(lex.tokenize(str) is not 'IFEL'): # change 
+        error()
+    else:
+        lex()
+        if(lex.tokenize(str) is not '('):
+            error()
+        else:
+            lex()
+            bool()
+            if (lex.tokenize(str) is not ')'):
+                error()
+            else:
+                lex()
+                statement()
+                if(lex.tokenize(str) is 'ELSE'):
+                    lex()
+                    statement()
+                else:
+                    error()
+
+
+# else_block --> 'else' ':' block
+#TODO
+def else_block():
+    if(lex.tokenize(str) is 'ELSE'):
+        lex()
+        statement()
+    else:
+        error()
 
 def start():
     variable()
@@ -170,11 +207,7 @@ def start():
     else:
         error()
 
-# else_block --> 'else' ':' block
-#TODO
-def else_block():
-    while(lex.tokenize(str) is '+'):
-        lex()
+
 
 def plus_minus():
     plus_minus()
@@ -319,4 +352,3 @@ def print_stmt():
 
 
 
-# fye
