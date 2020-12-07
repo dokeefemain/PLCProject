@@ -62,7 +62,7 @@ def compound_stmt(Token_arry):
     elif lexT == 'FOR':
         Token_arry = for_stmt(Token_arry)
     elif lexT == 'CLASS':
-        Token_arry = class_stmt(Token_arry)
+        Token_arry = class_def(Token_arry)
     elif lexT == 'TRY':
         Token_arry = try_stmt(Token_arry)
     return Token_arry
@@ -110,81 +110,80 @@ def basic_expression(Token_arry):
         if Token_arry[1] == 'NEWLINE':
             return Token_arry[2:]
 
-
-
-  # assignment --> = | += | -= | *= | **=
-
-def assignment():
-    while(lex.tokenize(str) is '='):
-      lex()
-      while(lex.tokenize(str) is '+='):
-        lex()
-        while(lex.tokenize(str) is '-='):
-          lex()
-          while(lex.tokenize(str) is '*='):
-            lex()
-            while(lex.tokenize(str) is '**='):
-              lex()
-
-  # type --> int | String | float | char | bool
-
-def type():
-    while(lex.tokenize(str) is 'INT'):
-      lex()
-      while(lex.tokenize(str) is 'STRING'):
-        lex()
-        while(lex.tokenize(str) is 'FLOAT'):
-          lex()
-          while(lex.tokenize(str) is 'CHAR'):
-            lex()
-            while(lex.tokenize(str) is 'BOOL'):
-              lex()
-
-def parens():
-      if(lex.tokenize(str) is 'INT'):
-          lex()
-      elif(lex.tokenize(str) is '('):
-          lex()
-          start()
-      elif(lex.tokenize(str) is ')'):
-          lex()
-      else:
-          error()
+def type(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    while(lexT is 'INT'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        while(lexT is 'STRING'):
+            lexT = Token_arry[0]
+            Token_arry = Token_arry[1:-1]
+            while(lexT is 'FLOAT'):
+                lexT = Token_arry[0]
+                Token_arry = Token_arry[1:-1]
+                while(lexT is 'CHAR'):
+                    lexT = Token_arry[0]
+                    Token_arry = Token_arry[1:-1]
+                    while(lexT is 'BOOL'):
+                        lexT = Token_arry[0]
+                        Token_arry = Token_arry[1:-1]
+    
+def parens(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'INT'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+    elif(lexT is 'LEFT_PAREN'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        Token_arry = start(Token_arry)
+    elif(lexT is 'RIGHT_PAREN'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+    else:
+        error()
 
 # while_stmt --> 'while' expression ':' block [else_block]
 
 
-def while_stmt():
-    if(lex.tokenize(str) is 'WHILE'):
-        lex()
+def while_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'WHILE'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
     
-        if(lex.tokenize(str) is '('):
-            lex()
-            bool()
+        if(lexT is 'LEFT_PAREN'):
+            lexT = Token_arry[0]
+            Token_arry = Token_arry[1:-1]
+            Token_arry = bool(Token_arry)
         
-            if(lex.tokenize(str) is ')'):
-                lex()
-                statement()
+            if(lexT is 'RIGHT_PAREN'):
+                lexT = Token_arry[0]
+                Token_arry = Token_arry[1:-1]
+                Token_arry = statement(Token_arry)
             else:
                 error()
 # if_stmt --> 'if' expression ':' block ifel_stmt | 'if' expression ':' block [else_block]
 #TODO
 # def if_stmt():
-#     if(lex.tokenize(str) is not 'IF'): # change 
+#     if(lexT is not 'IF'): # change 
 #         error()
 #     else:
 #         lex()
-#         if(lex.tokenize(str) is not '('):
+#         if(lexT is not '('):
 #             error()
 #         else:
 #             lex()
 #             bool()
-#             if (lex.tokenize(str) is not ')'):
+#             if (lexT is not ')'):
 #                 error()
 #             else:
 #                 lex()
 #                 statement()
-#                 if(lex.tokenize(str) is 'ELSE'):
+#                 if(lexT is 'ELSE'):
 #                     lex()
 #                     statement()
 #                 else:
@@ -198,29 +197,28 @@ def if_stmt(Token_arry):
     else:
         LexT = Token_arry[0]
         Token_arry = Token_arry[1:-1]
-        if(LexT is not '('):
+        if(LexT is not 'LEFT_PAREN'):
             error()
         else:
             LexT = Token_arry[0]
             Token_arry = Token_arry[1:-1]
-            #bool(Token_arry)
-            if (LexT is not ')'):
+            Token_arry = bool(Token_arry)
+            if (LexT is not 'RIGHT_PAREN'):
                 error()
             else:
                 LexT = Token_arry[0]
                 Token_arry = Token_arry[1:-1]
-                #statement(Token_arry)
+                Token_arry = statement(Token_arry)
                 if(LexT is 'IFEL'):
-                    #ifel_stmt(Token_arry)
-                
+                    Token_arry = ifel_stmt(Token_arry)
                 else:
                     LexT = Token_arry[0]
                     Token_arry = Token_arry[1:-1]
-                    #statement(Token_arry)
+                    Token_arry = statement(Token_arry)
                     if(LexT is 'ELSE'):
                         LexT = Token_arry[0]
                         Token_arry = Token_arry[1:-1]
-                        #statement(Token_arry)
+                        Token_arry = statement(Token_arry)
                     else:
                         error()
 
@@ -228,67 +226,79 @@ def if_stmt(Token_arry):
 # ifel_stmt --> 'ifel' expression ':' block ifel_stmt | 'ifel' expression ':' block [else_block]
 #TODO
 # def ifel_stmt():
-#     if(lex.tokenize(str) is not 'IFEL'): # change 
+#     if(lexT is not 'IFEL'): # change 
 #         error()
 #     else:
 #         lex()
-#         if(lex.tokenize(str) is not '('):
+#         if(lexT is not '('):
 #             error()
 #         else:
 #             lex()
 #             bool()
-#             if (lex.tokenize(str) is not ')'):
+#             if (lexT is not ')'):
 #                 error()
 #             else:
 #                 lex()
 #                 statement()
-#                 if(lex.tokenize(str) is 'ELSE'):
+#                 if(lexT is 'ELSE'):
 #                     lex()
 #                     statement()
 #                 else:
 #                     error()
 
-def ifel_stmt():
-    if(lex.tokenize(str) is not 'IF'):
+def ifel_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is not 'IF'):
         error()
     else:
-        lex()
-        if(lex.tokenize(str) is not '('):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        if(lexT is not 'LEFT_PAREN'):
             error()
         else:
-            lex()
-            bool()
-            if (lex.tokenize(str) is not ')'):
+            lexT = Token_arry[0]
+            Token_arry = Token_arry[1:-1]
+            Token_arry = bool(Token_arry)
+            if (lexT is not 'RIGHT_PAREN'):
                 error()
             else:
-                lex()
-                statement()
-                if(lex.tokenize(str) is 'IFEL'):
-                    lex()
-                    statement()
-                
+                lexT = Token_arry[0]
+                Token_arry = Token_arry[1:-1]
+                Token_arry = statement(Token_arry)
+                if(lexT is 'IFEL'):
+                    lexT = Token_arry[0]
+                    Token_arry = Token_arry[1:-1]
+                    Token_arry = statement(Token_arry)               
                 else:
-                    lex()
-                    statement()
-                    if(lex.tokenize(str) is not 'ELSE'):
+                    lexT = Token_arry[0]
+                    Token_arry = Token_arry[1:-1]
+                    Token_arry = statement(Token_arry)
+                    if(lexT is not 'ELSE'):
                         error()
                     else:
-                        lex()
-                        statement()
+                        lexT = Token_arry[0]
+                        Token_arry = Token_arry[1:-1]
+                        Token_arry = statement(Token_arry)
 
 
 # else_block --> 'else' ':' block
 #TODO
-def else_block():
-    if(lex.tokenize(str) is 'ELSE'):
-        lex()
-        statement()
+def else_block(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'ELSE'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        Token_arry = statement(Token_arry)
     else:
         error()
 
 def start(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
     Token_arry = variable(Token_arry)
-    if( is '='):
+    if(lexT is 'EQUAL'):
         LexT = Token_arry[0]
         Token_arry = Token_arry[1:-1]
         Token_arry = plus_minus(Token_arry)
@@ -297,173 +307,228 @@ def start(Token_arry):
 
 
 
-# def plus_minus():
-#     plus_minus()
-#     while(lex.tokenize(str) is '+' or lex.tokenize(str) is '-'):
-#         lex()
-#         multi_div()
-#         multi_div()
-
-# def multi_div():
-#     multi_div()
-#     while(lex.tokenize(str) is '*' or lex.tokenize(str) is '/'):
-#         lex()
-#         parens()
-#         parens()
-
-def parens():
-    if(lex.tokenize(str) is '('):
+def plus_minus(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    plus_minus()
+    while(lexT is '+' or lexT is '-'):
         lex()
+        multi_div()
+        multi_div()
+
+def multi_div(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    multi_div()
+    while(lexT is '*' or lexT is '/'):
+        lex()
+        parens()
+        parens()
+
+def parens(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'LEFT_PAREN'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
         plus_minus()
-        if(lex.tokenize(str) is ')'):
-            lex()
-            variable()
+        if(lexT is 'RIGHT_PAREN'):
+            lexT = Token_arry[0]
+            Token_arry = Token_arry[1:-1]
+            Token_arry = variable(Token_arry)
 
-def variable():
+def variable(Token_arry):
     if(variable is "a" or variable is "b" or variable is "c"):
-        lex()
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
     else:
         error()
           
       
 # import_stmt --> 'import' NAME
 
-def import_stmt():
-    while(lex.tokenize(str) is 'import'):
-        lex()
-        return 'NAME'
+def import_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    while(lexT is 'import'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
+        return 'ID'
 
 # return_stmt --> 'return' return_list
 
-def return_stmt():
-    while(lex.tokenize(str) is 'return'):
-        lex()
-        return_list()
-    while not(lex.tokenize(str) is 'return'):
+def return_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    while(lexT is 'return'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
+        Token_arry = return_list(Token_arry)
+    while not(lexT is 'return'):
         error()
 
 
 # bool --> '>' | '>=' | '<' | '<=' | '==' | '!='
-def bool():
-    if(lex.tokenize(str) is '>'):
-        lex()
-    elif(lex.tokenize(str) is '>='):
-        lex()
-    elif(lex.tokenize(str) is '<'):
-        lex()
-    elif(lex.tokenize(str) is '<='):
-        lex()
-    elif(lex.tokenize(str) is '=='):
-        lex()
-    elif(lex.tokenize(str) is '!='):
-        lex()
+def bool(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'GREATER'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
+    elif(lexT is 'GREATER_EQUAL'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
+    elif(lexT is 'LESS'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
+    elif(lexT is 'LESS_EQUAL'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
+    elif(lexT is 'EQUAL_TO'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
+    elif(lexT is 'DOESNT_EQUAL'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
     else:
         error()
 
 
 # global_stmt --> 'global' NAME+
 
-def global_stmt():
-    if(lex.tokenize(str) is 'global'):
-        lex()
+def global_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'GLOBAL'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
     else:
         error()
 
 
 # nonlocal_stmt --> 'nonlocal' NAME+
 
-def nonlocal_stmt():
-    if(lex.tokenize(str) is 'nonlocal'): 
-        lex()
+def nonlocal_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'NONLOCAL'): 
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
     else:
         error()
 
 # func_def --> 'def' NAME '(' [NAME] ')' ':'
-def func_def():
-    if(lex.tokenize(str) is 'DEF'):
-        lex()
+def func_def(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'DEF'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
     
-        if(lex.tokenize(str) is '('):
-            lex()
-            bool()
+        if(lexT is 'LEFT_PAREN'):
+            Token_arry = Token_arry[1:-1]
+            Token_arry = plus_minus(Token_arry)
+            Token_arry = bool(Token_arry)
 
-            if(lex.tokenize(str) is 'NAME'):
-                lex()
-        
-                if(lex.tokenize(str) is ')'):
-                    lex()
-                    statement()
+            if(lexT is 'ID'):
+                Token_arry = Token_arry[1:-1]
+                Token_arry = plus_minus(Token_arry)
+
+                if(lexT is 'RIGHT_PAREN'):
+                    Token_arry = Token_arry[1:-1]
+                    Token_arry = plus_minus(Token_arry)
+                    Token_arry = statement(Token_arry)
                 else:
                     error()
 
 # for_stmt --> 'for' NAME 'in' NAME ':'
 
-def for_stmt():
-    if(lex.tokenize(str) is 'for'): 
-        lex()
-        if(lex.tokenize(str) is 'NAME'):
-            lex()
-            if(lex.tokenize(str) is 'in'):
-                lex()
-                if(lex.tokenize(str) is 'NAME'):
-                    lex()
+def for_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'FOR'): 
+        Token_arry = plus_minus(Token_arry)
+        Token_arry = statement(Token_arry)
+        if(lexT is 'ID'):
+            Token_arry = plus_minus(Token_arry)
+            Token_arry = statement(Token_arry)
+            if(lexT is 'in'):
+                Token_arry = plus_minus(Token_arry)
+                Token_arry = statement(Token_arry)
+                if(lexT is 'ID'):
+                    Token_arry = plus_minus(Token_arry)
+                    Token_arry = statement(Token_arry)
 
 # class_def --> 'class' '(' [NAME] ')' ':'
-def class_def():
-    if(lex.tokenize(str) is 'CLASS'): 
-        lex()
+def class_def(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'CLASS'): 
+        Token_arry = plus_minus(Token_arry)
+        Token_arry = statement(Token_arry)
     
-        if(lex.tokenize(str) is '('):
-            lex()
-            bool()
+        if(lexT is 'LEFT_PAREN'):
+            Token_arry = plus_minus(Token_arry)
+            Token_arry = statement(Token_arry)
+            Token_arry = bool(Token_arry)
 
-            if(lex.tokenize(str) is 'NAME'):
-                lex()
+            if(lexT is 'ID'):
+                Token_arry = plus_minus(Token_arry)
+                Token_arry = statement(Token_arry)
         
-                if(lex.tokenize(str) is ')'):
-                    lex()
-                    statement()
+                if(lexT is 'RIGHT_PAREN'):
+                    Token_arry = plus_minus(Token_arry)
+                    Token_arry = statement(Token_arry)
+                    Token_arry = statement(Token_arry)
                 else:
                     error()
 
 
 # try_stmt --> 'try' ':' block | 'try' ':' block 'except' ':' block
-def try_stmt():
-    while(lex.tokenize(str) is 'try'):
-        lex()
+def try_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    while(lexT is 'TRY'):
+        # Token_arry = plus_minus(Token_arry)
+        Token_arry = statement(Token_arry)
+        Token_arry = block(Token_arry)
 
 #TODO       
 # return_list --> RETURNVAR (',' RETURNVAR )+ [','] | RETURNVAR ',' | RETURNVAR
-def return_list():
+def return_list(Token_arry):
     pass
 
 # truth --> 'Tru' | 'False'
-def truth():
-    if(lex.tokenize(str) is 'Tru'):
+def truth(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'Tru'):
         lex()
-    elif(lex.tokenize(str) is 'False'):
+    elif(lexT is 'False'):
         lex()
     else:
         error()
 
 # block --> NEWLINE INDENT statements | small_stmt
 #TODO
-def block():
+def block(Token_arry):
     pass
 
 # expression --> NAME bool NAME [ logic expression ] | NAME bool truth [ logic expression ]
 #TODO
 
-def expression():
+def expression(Token_arry):
     pass
 
 # logic --> 'and' | 'or' | 'nah'
-def logic():
-    if(lex.tokenize(str) is 'and'):
+def logic(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'and'):
         lex()
-    elif(lex.tokenize(str) is 'or'):
+    elif(lexT is 'or'):
         lex()
-    elif(lex.tokenize(str) is 'nah'):
+    elif(lexT is 'nah'):
         lex()
     else:
         error()
@@ -477,7 +542,7 @@ def print_stmt(Token_arry):
     if LexT == "PRINT":
         LexT = Token_arry[0]
         Token_arry = Token_arry[1:-1]
-        if LexT == "LEFT_PAREN"
+        if LexT == "LEFT_PAREN":
             while(LexT != 'RIGHT_PAREN'):
                 LexT = Token_arry[0]
                 Token_arry = Token_arry[1:-1]
