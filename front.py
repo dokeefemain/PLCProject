@@ -23,9 +23,10 @@ class lex:
             ('RETURN',r'return'),
             ('TRY',r'try'),
             ('EXCEPT',r'except'),
-            ('INT',r'int'),
-            ('STRING',r'String'),
-            ('CHAR',r'char'),
+            ('FLOAT',r'\d(\d)*\.\d(\d)*'),
+            ('INT',r'\d(\d)*'),
+            ('STRING',r'\"[a-zA-Z]\w*\"'),
+            ('CHAR',r'\'[a-zA-Z]\''),
             ('BOOL',r'bool'),
             ('GLOBAL',r'global'),
             ('NONLOCAL',r'nonlocal'),
@@ -46,12 +47,12 @@ class lex:
             ('TIMES',r'\*'),
             ('DIV',r'\/'),
             ('ID',r'[a-zA-Z]\w*'),
-            ('FLOAT',r'\d(\d)*\.\d(\d)*'),
+            #('FLOAT',r'\d(\d)*\.\d(\d)*'),
             ('NEWLINE', r'\n'),
             ('SKIP', r'[ \t]+'),        # SPACE and TABS
             ('LEFT_PAREN', r'\('),
             ('RIGHT_PAREN', r'\)'),
-            ('QUOTE', r'\"'),
+            #('QUOTE', r'\"'),
         ]
 
         tokens_join = '|'.join('(?P<%s>%s)' % x for x in rules)
@@ -71,6 +72,7 @@ class lex:
             if token_type == 'NEWLINE':
                 lin_start = i.end()
                 self.lin_num += 1
+                token.append(token_type)
             elif token_type == 'SKIP':
                 continue
             else:
@@ -80,10 +82,7 @@ class lex:
                     lexeme.append(token_lexeme)
                     row.append(self.lin_num)
                     # To print information about a Token
-                    print('Token = {0}, Lexeme = \'{1}\', Row = {2}, Column = {3}'.format(token_type, token_lexeme, self.lin_num, col))
+                    
         print(token)
         return token
-print('test')
-test = lex()
-str = open('test.txt','r').read()
-test.tokenize(str)
+

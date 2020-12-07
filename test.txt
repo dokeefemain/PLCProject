@@ -1,4 +1,2 @@
-test = 13.2
-print("this is test")
-if test == 13.2:
-    print(test + true)
+test = 13.2 + hi
+test2 = test

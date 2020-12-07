@@ -1,104 +1,115 @@
 from front import lex
 import re
 
-# class Syntax_Analyzer:
-#   def __init__(self, lex.tokenize(str)
-# ):
-#     self.lex.tokenize(str)
-#  = lex.tokenize(str)
-
+def check(arry, val):
+    for i in arry:
+        if i == val:
+            return True
+    return False
     
 def main():
     test = open('test.txt','r').read()
     Token_arry = lex().tokenize(test)
     print(Token_arry)
-    statement(Token_arry)
+    while True:
+        Token_arry = statement(Token_arry)
+        if len(Token_arry) == 0:
+            break
+
 
 
 def error():
     raise Exception("INVALID SYNTAX!!!")
 
-  # def start():
-  #   lex() 
-  #   plus_minus()
-
-  # statement --> small_stmt | compound_stmt
-
 
 def statement(Token_arry):
-    #lex()
     lexT = Token_arry[0]
-    Token_arry = Token_arry[1:-1]
-    print(lexT)
-    small_stmt(Token_arry)
-    compound_stmt(toke)
+    small_stmt_arry = ['ID','RETURN','IMPORT','GLOBAl','NONLOCAL']
+    compound_stmt_arry = ['DEF','IF','WHILE','FOR','CLASS','TRY']
+    if check(small_stmt,lexT):
+        Token_arry = small_stmt(Token_arry)
+    else:
+        Token_arry = compound_stmt
+    return Token_arry
 
 
  # small_stmt --> assign_stmt | return_stmt | import_stmt | global_stmt | nonlocal_stmt | print_stmt
 
 def small_stmt(Token_arry):
     lexT = Token_arry[0]
-    Token_arry = Token_arry[1:-1]
-    assign_stmt()
-    return_stmt()
-    import_stmt()
-    global_stmt()
-    nonlocal_stmt()
+    if lexT == 'ID':
+        Token_arry = assign_stmt()
+    elif lexT == 'RETURN':
+        Token_arry = return_stmt()
+    elif lexT == 'IMPORT':
+        Token_arry == import_stmt()
+    elif lexT == 'GLOBAL':
+        Token_arry == global_stmt()
+    elif lexT == 'NONLOCAL':
+        Token_arry == nonlocal_stmt()
+    return Token_arry
 
   # compound_stmt --> func_def | if_stmt | while_stmt | for_stmt | class_def | try_stmt
 
-def compound_stmt():
-    lex()
-    func_def()
-    if_stmt()
-    while_stmt()
-    for_stmt()
-    class_def()
-    try_stmt()
+def compound_stmt(Token_arry):
+    lexT = Token_arry[0]
+    if lexT == 'DEF':
+        Token_arry = func_def(Token_arry)
+    elif lexT == 'IF':
+        Token_arry = if_stmt(Token_arry)
+    elif lexT == 'WHILE':
+        Token_arry = while_stmt(Token_arry)
+    elif lexT == 'FOR':
+        Token_arry = for_stmt(Token_arry)
+    elif lexT == 'CLASS':
+        Token_arry = class_stmt(Token_arry)
+    elif lexT == 'TRY':
+        Token_arry = try_stmt(Token_arry)
+    return Token_arry
 
     # assign_stmt --> type NAME assignment basic_expression
 
-# TODO
-def assign_stmt():
-    type()
-    lex()
-    assignment()
-    basic_expression()
+#TODO
+def assign_stmt(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:]
+    if lexT != 'ID':
+        error()
+    else:
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:]
+        assignment_arry = ['EQUAL','PLUS_EQUAL','MINUS_EQUAL','TIME_EQUAL']
+        if check(assignment_arry,lexT)==False:
+            error()
+        else:
+            error()
+            Token_arry = basic_expression(Token_arry)
+    return Token_arry
 
   # basic_expression --> TERM '+' basic_expression | TERM '-' basic_expression | TERM '*' basic_expression | TERM '/' basic_expression | TERM '**' basic_expression | TERM '*' basic_expression | TERM 
 
 # This may need to be changed to basic_expression() and combine with multi_div() to corroborate  
 # grammar above
 
-def basic_expression():
-    plus_minus()
+def basic_expression(Token_arry):
+    tmp = ['ID','FLOAT','INT','CHAR','BOOL','STRING']
+    tmp2 = ['PLUS','MINUS','TIMES','DIV']
+    #check if it basic like ID = ID
+    if Token_arry[1] == 'NEWLINE' and check(tmp,Token_arry[0]):
+        return Token_arry[2:]
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:]
+    while True:
+        if check(tmp,lexT) == False:
+            error()
+        else:
+            lexT = Token_arry[0]
+            Token_arry = Token_arry[1:]
+            if check(tmp2,lexT) == False:
+                error()
+        if Token_arry[1] == 'NEWLINE':
+            return Token_arry[2:]
 
-def plus_minus():
-      lex()
-      plus_minus()
-      while(lex.tokenize(str) is '+'):
-          lex()
-          multi_div()
-          plus_minus()
-          while(lex.tokenize(str) is '-'):
-              lex()
-              multi_div()
-              multi_div()
-
-def multi_div():
-      multi_div()
-      while(lex.tokenize(str) is '*'):
-          lex()
-          parens()
-          multi_div()
-          while(lex.tokenize(str) is '\/'):
-              lex()
-              parens()
-              multi_div()
-              while(lex.tokenize(str) is '%'):
-                  lex()
-                  parens()
-                  parens()
 
 
   # assignment --> = | += | -= | *= | **=
@@ -275,11 +286,12 @@ def else_block():
     else:
         error()
 
-def start():
-    variable()
-    if(lex.tokenize(str) is '='):
-        lex()
-        plus_minus()
+def start(Token_arry):
+    Token_arry = variable(Token_arry)
+    if( is '='):
+        LexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        Token_arry = plus_minus(Token_arry)
     else:
         error()
 
@@ -459,9 +471,16 @@ def logic():
 # print_stmt -->  'print' ([expression (',' expression)* [',']] | '>>' expression [(',' expression)+ [',']])
 
 
-def print_stmt():
-    while(lex.tokenize(str) is 'print'):
-        lex()
+def print_stmt(Token_arry):
+    LexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if LexT == "PRINT":
+        LexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        if LexT == "LEFT_PAREN"
+            while(LexT != 'RIGHT_PAREN'):
+                LexT = Token_arry[0]
+                Token_arry = Token_arry[1:-1]
 
 
 main()
