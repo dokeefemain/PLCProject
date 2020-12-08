@@ -1,2 +1,12 @@
 test = 13.2 + hi
 test2 = test
+
+
+global dog = 30 + cat
+return dog
+print dog
+nonlocal dog
+
+def shrimp
+try bob 
+except bill

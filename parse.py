@@ -38,15 +38,18 @@ def statement(Token_arry):
 def small_stmt(Token_arry):
     lexT = Token_arry[0]
     if lexT == 'ID':
-        Token_arry = assign_stmt()
+        Token_arry = assign_stmt(Token_arry)
     elif lexT == 'RETURN':
-        Token_arry = return_stmt()
+        Token_arry = return_stmt(Token_arry)
     elif lexT == 'IMPORT':
-        Token_arry == import_stmt()
+        Token_arry = import_stmt(Token_arry)
     elif lexT == 'GLOBAL':
-        Token_arry == global_stmt()
+        Token_arry = global_stmt(Token_arry)
     elif lexT == 'NONLOCAL':
-        Token_arry == nonlocal_stmt()
+        Token_arry = nonlocal_stmt(Token_arry)
+    else:
+        Token_arry = print_stmt
+
     return Token_arry
 
   # compound_stmt --> func_def | if_stmt | while_stmt | for_stmt | class_def | try_stmt
@@ -63,8 +66,9 @@ def compound_stmt(Token_arry):
         Token_arry = for_stmt(Token_arry)
     elif lexT == 'CLASS':
         Token_arry = class_def(Token_arry)
-    elif lexT == 'TRY':
+    else:
         Token_arry = try_stmt(Token_arry)
+
     return Token_arry
 
     # assign_stmt --> type NAME assignment basic_expression
@@ -109,6 +113,9 @@ def basic_expression(Token_arry):
                 error()
         if Token_arry[1] == 'NEWLINE':
             return Token_arry[2:]
+
+# type --> int | String | float | char | bool
+
 
 def type(Token_arry):
     lexT = Token_arry[0]
@@ -362,7 +369,7 @@ def return_stmt(Token_arry):
     Token_arry = Token_arry[1:-1]
     while(lexT is 'return'):
         Token_arry = Token_arry[1:-1]
-        Token_arry = plus_minus(Token_arry)
+        Token_arry = basic_expression(Token_arry)
         Token_arry = return_list(Token_arry)
     while not(lexT is 'return'):
         error()
@@ -486,17 +493,38 @@ def class_def(Token_arry):
 
 # try_stmt --> 'try' ':' block | 'try' ':' block 'except' ':' block
 def try_stmt(Token_arry):
+    # lexT = Token_arry[0]
+    # Token_arry = Token_arry[1:-1]
+    # while(lexT is 'TRY'):
+    #     # Token_arry = plus_minus(Token_arry)
+    #     Token_arry = statement(Token_arry)
+    #     Token_arry = block(Token_arry)
+
     lexT = Token_arry[0]
-    Token_arry = Token_arry[1:-1]
-    while(lexT is 'TRY'):
-        # Token_arry = plus_minus(Token_arry)
-        Token_arry = statement(Token_arry)
+    if lexT == 'TRY':
         Token_arry = block(Token_arry)
+        if lexT == 'EXCEPT':
+            Token_arry = except(Token_arry)
+
+def except(Token_arry):
+    lexT = Token_arry[0]
+    if lexT == 'EXCEPT':
+        Token_arry = block(Token_arry)
+
+        
 
 #TODO       
 # return_list --> RETURNVAR (',' RETURNVAR )+ [','] | RETURNVAR ',' | RETURNVAR
 def return_list(Token_arry):
-    pass
+    LexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if LexT == "RETURNVAR":
+        LexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        if LexT == "LEFT_PAREN":
+            while(LexT != 'RIGHT_PAREN'):
+                LexT = Token_arry[0]
+                Token_arry = Token_arry[1:-1]
 
 # truth --> 'Tru' | 'False'
 def truth(Token_arry):
@@ -512,7 +540,9 @@ def truth(Token_arry):
 # block --> NEWLINE INDENT statements | small_stmt
 #TODO
 def block(Token_arry):
-    pass
+    lexT = Token_arry[0]
+    Token_arry = statement(Token_arry)
+    Token_arry = small_stmt(Token_arry)
 
 # expression --> NAME bool NAME [ logic expression ] | NAME bool truth [ logic expression ]
 #TODO
