@@ -27,7 +27,7 @@ def error():
 
   # def start():
   #   lex() 
-  #   plus_minus()
+  #   basic_expression()
 
   # statement --> small_stmt | compound_stmt
 
@@ -135,12 +135,12 @@ def basic_expression(Token_arry):
             
 
 
-def compound_stmt(Token_arry):
-    lexT = Token_arry[0]
-    if lexT == 'ID':
-        Token_arry = func_def(Token_arry)
+# def compound_stmt(Token_arry):
+#     lexT = Token_arry[0]
+#     if lexT == 'ID':
+#         Token_arry = func_def(Token_arry)
 
-    return Token_arry
+#     return Token_arry
 
 def func_def(Token_arry):
     lexT = Token_arry[0]
@@ -365,5 +365,119 @@ def block(Token_arry):
     lexT = Token_arry[0]
     Token_arry = statement(Token_arry)
     Token_arry = small_stmt(Token_arry)
+
+def type(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    while(lexT is 'INT'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        while(lexT is 'STRING'):
+            lexT = Token_arry[0]
+            Token_arry = Token_arry[1:-1]
+            while(lexT is 'FLOAT'):
+                lexT = Token_arry[0]
+                Token_arry = Token_arry[1:-1]
+                while(lexT is 'CHAR'):
+                    lexT = Token_arry[0]
+                    Token_arry = Token_arry[1:-1]
+                    while(lexT is 'BOOL'):
+                        lexT = Token_arry[0]
+                        Token_arry = Token_arry[1:-1]
+
+def parens(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'INT'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+    elif(lexT is 'LEFT_PAREN'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        Token_arry = start(Token_arry)
+    elif(lexT is 'RIGHT_PAREN'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+    else:
+        error()
+
+def start(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    Token_arry = variable(Token_arry)
+    if(lexT is 'EQUAL'):
+        LexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        Token_arry = basic_expression(Token_arry)
+    else:
+        error()
+
+def variable(Token_arry):
+    if(variable is "a" or variable is "b" or variable is "c"):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = basic_expression(Token_arry)
+    else:
+        error()
+
+def bool(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'GREATER'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = basic_expression(Token_arry)
+    elif(lexT is 'GREATER_EQUAL'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = basic_expression(Token_arry)
+    elif(lexT is 'LESS'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = basic_expression(Token_arry)
+    elif(lexT is 'LESS_EQUAL'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = basic_expression(Token_arry)
+    elif(lexT is 'EQUAL_TO'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = basic_expression(Token_arry)
+    elif(lexT is 'DOESNT_EQUAL'):
+        Token_arry = Token_arry[1:-1]
+        Token_arry = basic_expression(Token_arry)
+    else:
+        error()
+
+def logic(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'and'):
+        lex()
+    elif(lexT is 'or'):
+        lex()
+    elif(lexT is 'nah'):
+        lex()
+    else:
+        error()
+
+def truth(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'Tru'):
+        lex()
+    elif(lexT is 'False'):
+        lex()
+    else:
+        error()
+
+def except_block(Token_arry):
+    lexT = Token_arry[0]
+    if lexT == 'EXCEPT':
+        Token_arry = block(Token_arry)
+
+def else_block(Token_arry):
+    lexT = Token_arry[0]
+    Token_arry = Token_arry[1:-1]
+    if(lexT is 'ELSE'):
+        lexT = Token_arry[0]
+        Token_arry = Token_arry[1:-1]
+        Token_arry = statement(Token_arry)
+    else:
+        error()
     
 main()
