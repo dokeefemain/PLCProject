@@ -1,4 +1,7 @@
 from front import lex
+from lex import check
+import parse
+import syntax
 import re
 
 operators = [ '+', '-', '*', '/', '%' ]
@@ -7,116 +10,12 @@ types = [ "var", "int", "operator" ]
 
 
 def analyze_semantically ():
-    print ("Expression: %s" % expression)
-    lexemes = expression.split()
-    lexeme_map = []
-    for lexeme in lexemes:
-        lexeme_type = returnType(lexeme)
-        to_store = (lexeme,lexeme_type)
-        lexeme_map.append(to_store) # (token, type)
-    print (lexeme_map)
-            
+    (arry,mychar):
+      for i in arry:
+        if i == mychar:
+          return True
+      return False
 
-def returnType (lexeme):
-    if lexeme.isalpha():
-        return types[0] # var
-    elif lexeme.isnumeric():
-        return types[1] # int
-    else:
-        return types[2] # operator
-
-analyze_semantically()
-
-def check(arry,mychar):
-  for i in arry:
-    if i == mychar:
-      return True
-  return False
-
-class lex:
-    # Token row
-    lin_num = 1
-    def tokenize(self, code):
-        rules = [
-            ('AND',r'and'),
-            ('OR',r'or'),
-            ('NAH',r'nah'),
-            ('TRU',r'Tru'),
-            ('FALSE',r'False'),
-            ('IMPORT',r'import'),
-            ('FROM',r'from'),
-            ('CLASS',r'class'),
-            ('DEF',r'def'),
-            ('IF',r'if'),
-            ('IFEL',r'ifel'),
-            ('ELSE',r'else'),
-            ('FOR',r'for'),
-            ('WHILE',r'while'),
-            ('RETURN',r'return'),
-            ('TRY',r'try'),
-            ('EXCEPT',r'except'),
-            ('FLOAT',r'\d(\d)*\.\d(\d)*'),
-            ('INT',r'\d(\d)*'),
-            ('STRING',r'\"[a-zA-Z]\w*\"'),
-            ('CHAR',r'\'[a-zA-Z]\''),
-            ('BOOL',r'bool'),
-            ('GLOBAL',r'global'),
-            ('NONLOCAL',r'nonlocal'),
-            ('PRINT',r'print'),
-            #bool
-            ('GREATER',r'>'),
-            ('GREATER_EQUAL',r'>='),
-            ('LESS',r'<'),
-            ('LESS_EQUAL',r'<='),
-            ('EQUAL_TO',r'=='),
-            ('DOESNT_EQUAL',r'!='),
-            ('EQUAL',r'='),
-            ('PLUS_EQUAL',r'\+='),
-            ('MINUS_EQUAL',r'-='),
-            ('TIMES_EQUAL',r'\*='),
-            ('PLUS',r'\+'),
-            ('MINUS',r'\+'),
-            ('TIMES',r'\*'),
-            ('DIV',r'\/'),
-            ('ID',r'[a-zA-Z]\w*'),
-            #('FLOAT',r'\d(\d)*\.\d(\d)*'),
-            ('NEWLINE', r'\n'),
-            ('SKIP', r'[ \t]+'),        # SPACE and TABS
-            ('LEFT_PAREN', r'\('),
-            ('RIGHT_PAREN', r'\)'),
-            #('QUOTE', r'\"'),
-        ]
-
-        tokens_join = '|'.join('(?P<%s>%s)' % x for x in rules)
-        lin_start = 0
-
-        # Lists of output for the program
-        token = []
-        lexeme = []
-        row = []
-        column = []
-
-        # It analyzes the code to find the lexemes and their respective Tokens
-        for i in re.finditer(tokens_join, code):
-            token_type = i.lastgroup
-            token_lexeme = i.group(token_type)
-
-            if token_type == 'NEWLINE':
-                lin_start = i.end()
-                self.lin_num += 1
-                token.append(token_type)
-            elif token_type == 'SKIP':
-                continue
-            else:
-                    col = i.start() - lin_start
-                    column.append(col)
-                    token.append(token_type)
-                    lexeme.append(token_lexeme)
-                    row.append(self.lin_num)
-                    # To print information about a Token
-                    
-        print(token)
-        return token
 
 file = open("test.txt","r")
 basic_exp = ["+","-","*","/"]
@@ -228,23 +127,6 @@ for i in strs:
       if ch == 'e' or ch == 'E' or ch == '.':
         print ("real: ",i)
         
-def check(arry, val):
-    for i in arry:
-        if i == val:
-            return True
-    return False
-    
-def main():
-    test = open('test.txt','r').read()
-    Token_arry = lex().tokenize(test)
-    print(Token_arry)
-    while True:
-        Token_arry = statement(Token_arry)
-        if len(Token_arry) == 0:
-            break
-
-
-
 def error():
     raise Exception("INVALID SYNTAX!!!")
 
@@ -805,4 +687,6 @@ def print_stmt(Token_arry):
                 Token_arry = Token_arry[1:-1]
 
 
-main()        
+
+analyze_semantically()
+
