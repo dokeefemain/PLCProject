@@ -1,5 +1,5 @@
-from front import lex
-from lex import check
+import lex
+import front
 import parse
 import syntax
 import re
