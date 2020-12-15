@@ -1,6 +1,11 @@
 from front import lex
 import re
 
+operators = [ '+', '-', '*', '/', '%' ]
+expression = "Enter any expression here"
+types = [ "var", "int", "operator" ]
+
+
 def analyze_semantically ():
     print ("Expression: %s" % expression)
     lexemes = expression.split()
